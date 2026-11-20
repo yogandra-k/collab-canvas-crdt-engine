@@ -3,70 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CollabFlow – Real-Time CRDT Vector Canvas & Infinite Workspace</title>
+    <title>CollabFlow Ultra – Real-Time CRDT Infinite Canvas Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- Confetti canvas for celebratory reactions -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
     <div class="workspace-app">
-        <!-- TOP TOOLBAR -->
+        <!-- TOP APP HEADER -->
         <header class="app-header">
             <div class="brand-group">
                 <div class="logo-mark">⚡</div>
                 <div>
-                    <h1 class="brand-title">CollabFlow Studio</h1>
-                    <span class="sub-badge">CRDT Vector Sync & Multi-User Engine</span>
+                    <h1 class="brand-title">CollabFlow Ultra</h1>
+                    <span class="sub-badge">CRDT Vector Engine · Multi-User Infinite Studio</span>
                 </div>
             </div>
 
-            <!-- Drawing Tools Palette -->
+            <!-- FLOATING TOOLBAR -->
             <div class="tools-palette">
-                <button class="tool-btn active" id="tool-select" onclick="setTool('select')">
-                    <span class="t-icon">↖️</span> Select
+                <button class="tool-btn" id="tool-select" onclick="setTool('select')" title="Select & Move (V)">
+                    <span class="t-icon">↖️</span> <span class="t-label">Select</span>
                 </button>
-                <button class="tool-btn" id="tool-draw" onclick="setTool('draw')">
-                    <span class="t-icon">✏️</span> Freehand
+                <button class="tool-btn active" id="tool-draw" onclick="setTool('draw')" title="Freehand Pen (P)">
+                    <span class="t-icon">✏️</span> <span class="t-label">Pen</span>
                 </button>
-                <button class="tool-btn" id="tool-rect" onclick="setTool('rect')">
-                    <span class="t-icon">◻️</span> Rectangle
+                <button class="tool-btn" id="tool-rect" onclick="setTool('rect')" title="Rectangle (R)">
+                    <span class="t-icon">◻️</span> <span class="t-label">Box</span>
                 </button>
-                <button class="tool-btn" id="tool-circle" onclick="setTool('circle')">
-                    <span class="t-icon">⭕</span> Circle
+                <button class="tool-btn" id="tool-circle" onclick="setTool('circle')" title="Circle (O)">
+                    <span class="t-icon">⭕</span> <span class="t-label">Circle</span>
                 </button>
-                <button class="tool-btn" id="tool-sticky" onclick="setTool('sticky')">
-                    <span class="t-icon">📝</span> Sticky Note
+                <button class="tool-btn" id="tool-arrow" onclick="setTool('arrow')" title="Connector Arrow (A)">
+                    <span class="t-icon">↗️</span> <span class="t-label">Arrow</span>
+                </button>
+                <button class="tool-btn" id="tool-sticky" onclick="setTool('sticky')" title="Sticky Note (S)">
+                    <span class="t-icon">📝</span> <span class="t-label">Sticky</span>
+                </button>
+                <button class="tool-btn" id="tool-eraser" onclick="setTool('eraser')" title="Eraser (E)">
+                    <span class="t-icon">🧹</span> <span class="t-label">Eraser</span>
+                </button>
+                <button class="tool-btn" id="tool-laser" onclick="setTool('laser')" title="Laser Pointer (L)">
+                    <span class="t-icon">✨</span> <span class="t-label">Laser</span>
                 </button>
 
                 <div class="tool-divider"></div>
 
+                <!-- Stroke Width Picker -->
+                <div class="stroke-width-picker">
+                    <button class="width-btn active" onclick="setStrokeWidth(3)" title="Fine (3px)"><span style="width:4px;height:4px;"></span></button>
+                    <button class="width-btn" onclick="setStrokeWidth(6)" title="Medium (6px)"><span style="width:7px;height:7px;"></span></button>
+                    <button class="width-btn" onclick="setStrokeWidth(12)" title="Thick (12px)"><span style="width:11px;height:11px;"></span></button>
+                </div>
+
+                <div class="tool-divider"></div>
+
+                <!-- Palette Colors -->
                 <div class="color-picker-group">
                     <button class="color-dot active" style="background: #f59e0b;" onclick="setColor('#f59e0b')"></button>
                     <button class="color-dot" style="background: #10b981;" onclick="setColor('#10b981')"></button>
                     <button class="color-dot" style="background: #ec4899;" onclick="setColor('#ec4899')"></button>
                     <button class="color-dot" style="background: #8b5cf6;" onclick="setColor('#8b5cf6')"></button>
                     <button class="color-dot" style="background: #06b6d4;" onclick="setColor('#06b6d4')"></button>
+                    <button class="color-dot" style="background: #f43f5e;" onclick="setColor('#f43f5e')"></button>
                     <button class="color-dot" style="background: #ffffff;" onclick="setColor('#ffffff')"></button>
                 </div>
             </div>
 
-            <!-- Multi-User Peer Avatars & Controls -->
+            <!-- ACTIONS & COLLABORATORS -->
             <div class="header-actions">
                 <div class="peer-avatars-group" id="peer-avatars">
                     <!-- Dynamic Peer Avatars -->
                 </div>
-                <button class="btn btn-accent" onclick="spawnBotSwarm()">🤖 Spawn 10 Virtual Peers</button>
-                <button class="btn btn-secondary" onclick="clearBoardCanvas()">🗑️ Clear Board</button>
+                <button class="btn btn-primary" onclick="spawnBotSwarm()">🤖 +10 Bot Swarm</button>
+                <button class="btn btn-secondary" onclick="exportCanvasPNG()">📸 Export PNG</button>
+                <button class="btn btn-secondary" onclick="toggleMiniMap()">🗺️ Map</button>
+                <button class="btn btn-secondary" onclick="toggleAudioChat()">🎙️ Live Audio</button>
+                <button class="btn btn-danger" onclick="clearBoardCanvas()">🗑️ Clear</button>
             </div>
         </header>
 
-        <!-- MAIN VIEWPORT CANVAS -->
+        <!-- MAIN VIEWPORT -->
         <main class="canvas-viewport" id="canvas-container">
             <canvas id="main-canvas"></canvas>
 
             <!-- Virtual Multi-User Live Cursors Overlay -->
             <div id="cursors-layer" class="cursors-layer"></div>
 
-            <!-- Floating Mini Telemetry HUD -->
+            <!-- EMOJI REACTION FLOATERS BAR -->
+            <div class="emoji-reaction-bar">
+                <button class="reaction-btn" onclick="fireReaction('🔥')">🔥</button>
+                <button class="reaction-btn" onclick="fireReaction('🚀')">🚀</button>
+                <button class="reaction-btn" onclick="fireReaction('👏')">👏</button>
+                <button class="reaction-btn" onclick="fireReaction('💡')">💡</button>
+                <button class="reaction-btn" onclick="fireReaction('🎉')">🎉</button>
+            </div>
+
+            <!-- FLOATING MINI-MAP (Radar View) -->
+            <div class="minimap-panel" id="minimap-container">
+                <div class="minimap-title">RADAR VIEWPORT</div>
+                <canvas id="minimap-canvas" width="160" height="100"></canvas>
+            </div>
+
+            <!-- ZOOM / PAN CONTROLLER -->
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="adjustZoom(0.1)" title="Zoom In">+</button>
+                <span class="zoom-label" id="zoom-text">100%</span>
+                <button class="zoom-btn" onclick="adjustZoom(-0.1)" title="Zoom Out">-</button>
+                <button class="zoom-btn" onclick="resetZoomAndPan()" title="Reset View">⤢</button>
+            </div>
+
+            <!-- FLOATING MINI TELEMETRY HUD -->
             <div class="floating-telemetry-hud">
                 <div class="hud-header">
                     <span>⚡ Vector CRDT State</span>
@@ -82,30 +130,41 @@
                         <span class="v" id="hud-elements">0</span>
                     </div>
                     <div class="hud-metric">
-                        <span class="k">Connected Peers:</span>
+                        <span class="k">Active Peers:</span>
                         <span class="v" id="hud-peers">1</span>
                     </div>
                     <div class="hud-metric">
                         <span class="k">Sync Latency:</span>
-                        <span class="v highlight" id="hud-latency">&lt; 15ms</span>
+                        <span class="v highlight" id="hud-latency">&lt; 12ms</span>
+                    </div>
+                    <div class="hud-metric">
+                        <span class="k">Zoom / Viewport:</span>
+                        <span class="v" id="hud-viewport">1.0x (0,0)</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Sticky Text Modal (Hidden by default) -->
+            <!-- STICKY NOTE MODAL POPUP -->
             <div class="sticky-editor-pop" id="sticky-pop" style="display: none;">
-                <input type="text" id="sticky-input" placeholder="Type note content..." onkeydown="if(event.key==='Enter') commitStickyNote()">
-                <button class="btn btn-accent" onclick="commitStickyNote()">Add Note</button>
+                <input type="text" id="sticky-input" placeholder="Enter note memo..." onkeydown="if(event.key==='Enter') commitStickyNote()">
+                <button class="btn btn-primary" onclick="commitStickyNote()">Post Memo</button>
+            </div>
+
+            <!-- LIVE AUDIO / VOICE STATUS PILL -->
+            <div class="audio-status-pill" id="audio-pill" style="display: none;">
+                <span class="pulse-mic">🎙️</span>
+                <span>Spatial Audio Room: <strong>Main Lounge</strong></span>
+                <span class="speaking-indicator">LIVE</span>
             </div>
         </main>
 
         <!-- FOOTER BAR -->
         <footer class="app-footer">
             <div class="footer-left">
-                <span>Architecture: <strong>CRDT (LWW-Element-Set) + WebSockets Full-Duplex + Redis Pub/Sub Cluster</strong></span>
+                <span>Core Protocol: <strong>Conflict-Free Replicated Data Types (LWW-Element-Set) + WebSockets Full-Duplex</strong></span>
             </div>
             <div class="footer-right">
-                <span>Candidate Profile: <strong>Kalisetti Yogandra</strong> (GITAM University) | SDE Distributed Systems</span>
+                <span>Architect: <strong>Kalisetti Yogandra</strong> · Real-Time Collaborative Canvas</span>
             </div>
         </footer>
     </div>
