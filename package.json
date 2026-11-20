@@ -1,0 +1,14 @@
+{
+  "name": "collab-canvas-crdt-engine",
+  "version": "1.0.0",
+  "description": "Real-Time Distributed Collaborative Canvas & Infinite Workspace Engine using WebSockets, Operational Transformation / CRDT vector synchronization, Redis Pub/Sub cluster simulation, and live multi-cursor tracking.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ws": "^8.17.0"
+  }
+}
